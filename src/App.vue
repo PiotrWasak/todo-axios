@@ -2,7 +2,9 @@
   <v-app>
     <main-nav></main-nav>
     <v-main>
-      <router-view />
+      <v-container>
+        <router-view />
+      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -14,7 +16,7 @@ export default {
   name: "App",
 
   data: () => ({
-    //
+    isLoggedIn: false,
   }),
 };
 </script>

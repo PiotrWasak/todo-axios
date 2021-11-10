@@ -24,21 +24,18 @@
 
     <v-navigation-drawer v-model="drawer" absolute bottom temporary>
       <v-list nav dense>
-        <v-list-item-group
-          v-model="group"
-          active-class="deep-purple--text text--accent-4"
-        >
-          <v-list-item>
-            <router-link to="/home"
-              ><v-list-item-title>Tasks</v-list-item-title></router-link
-            >
-          </v-list-item>
+        <v-list-item-group active-class="deep-purple--text text--accent-4">
+          <router-link to="/">
+            <v-list-item>
+              <v-list-item-title>Tasks</v-list-item-title>
+            </v-list-item>
+          </router-link>
 
-          <v-list-item>
-            <router-link to="/profile"
-              ><v-list-item-title>Profile</v-list-item-title></router-link
-            >
-          </v-list-item>
+          <router-link to="/profile">
+            <v-list-item>
+              <v-list-item-title>Profile</v-list-item-title>
+            </v-list-item>
+          </router-link>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
