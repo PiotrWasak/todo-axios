@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-system-bar color="deep-purple darken-3">
+      {{ date }}
       <v-spacer></v-spacer>
       <div v-if="isLoggedIn">Signed in as: {{ user.email }} <v-btn @click="logout" text>Sign out</v-btn></div>
       <div v-else>Not signed in.</div>
@@ -79,7 +80,9 @@ export default {
     }
   },
   computed: {
-
+    date(){
+      return new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    }
   },
   mounted() {
     this.getUserData();

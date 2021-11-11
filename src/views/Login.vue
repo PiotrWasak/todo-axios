@@ -25,7 +25,7 @@
       </v-row>
       <v-row>
         <v-col align="center">
-          <v-btn @click="loginUser" :disabled="loginValid" color="primary" align="center">Log in</v-btn>
+          <v-btn @click="loginUser" :disabled="!loginValid" color="primary" align="center">Log in</v-btn>
         </v-col>
       </v-row>
     </v-form>
