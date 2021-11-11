@@ -1,0 +1,96 @@
+<template>
+  <div>
+    <v-system-bar color="deep-purple darken-3">
+      <v-spacer></v-spacer>
+      <div v-if="isLoggedIn">Signed in as: {{ user.email }} <v-btn @click="logout" text>Sign out</v-btn></div>
+      <div v-else>Not signed in.</div>
+    </v-system-bar>
+
+    <v-app-bar color="deep-purple accent-4" dark>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+
+      <router-link to="/"><v-toolbar-title to="/">TODO</v-toolbar-title></router-link>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-filter</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-navigation-drawer v-model="drawer" absolute bottom temporary>
+      <v-list nav dense>
+        <v-list-item-group active-class="deep-purple--text text--accent-4">
+          <router-link to="/tasks">
+            <v-list-item>
+              <v-list-item-title>Tasks</v-list-item-title>
+            </v-list-item>
+          </router-link>
+
+          <router-link to="/profile">
+            <v-list-item>
+              <v-list-item-title>Profile</v-list-item-title>
+            </v-list-item>
+          </router-link>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+  </div>
+</template>
+<script>
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+export default {
+  name: "TheMainNav",
+  data() {
+    return {
+      isLoggedIn: false,
+      drawer: false,
+      user: {},
+    };
+  },
+  methods: {
+    async getUserData(){
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          this.user = user;
+          this.isLoggedIn = true;
+          console.log(user.email);
+        } else {
+          this.isLoggedIn = false;
+        }
+      });
+    },
+    logout(){
+      getAuth().signOut().then(() => {
+        console.log("Signed out succesfully!");
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+  },
+  computed: {
+
+  },
+  mounted() {
+    this.getUserData();
+  }
+};
+</script>
+<style scoped>
+a {
+  color: white;
+}
+a:visited{
+  color: white;
+}
+</style>

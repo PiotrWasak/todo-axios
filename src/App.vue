@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import MainNav from "./components/MainNav.vue";
+import MainNav from "./components/TheMainNav.vue";
 export default {
   components: { MainNav },
   name: "App",
@@ -20,3 +20,9 @@ export default {
   }),
 };
 </script>
+
+<style>
+a{
+  text-decoration: none;
+}
+</style>

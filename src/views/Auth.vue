@@ -1,52 +1,49 @@
 <template>
-  <v-container class="loginContainer">
-    <v-form ref="form" v-model="taskValid">
-      <v-row>
-        <v-col>
-          <v-text-field
-            v-model="loginValue"
-            label="Login"
-            :counter="50"
-            :rules="loginRules"
-            required
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-text-field
-            v-model="passwordValue"
-            label="Password"
-            :counter="20"
-            type="password"
-            :rules="passwordRules"
-            required
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col align="center">
-          <v-btn @click="logIn" color="primary" align="center">Log in</v-btn>
-        </v-col>
-      </v-row>
-    </v-form>
+  <v-container>
+
   </v-container>
 </template>
 
 <script>
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 export default {
   name: "Auth",
+  data() {
+    return {
+      isLoggedIn: false,
+    };
+  },
   methods: {
-    logIn() {
-      this.$router.push("/tasks");
+    redirect(){
+      if (this.isLoggedIn) {
+        this.$router.push('/tasks').catch(() => {
+          console.log('error');});
+      } else {
+        this.$router.push('/login');
+      }
+    },
+    async getUserData(){
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          console.log(user.email);
+          this.isLoggedIn = true;
+          this.redirect();
+        } else {
+          this.isLoggedIn = false;
+          console.log("User not logged in");
+          this.redirect();
+        }
+      });
     },
   },
+  mounted() {
+    this.getUserData();
+  }
 };
 </script>
 
 <style scoped>
-.loginContainer {
-  margin-top: 20vh;
-  width: 60%;
-}
+
 </style>
