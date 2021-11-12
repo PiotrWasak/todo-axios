@@ -1,16 +1,24 @@
 <template>
   <div>
-    <v-system-bar color="deep-purple darken-3">
+    <v-system-bar>
       {{ date }}
       <v-spacer></v-spacer>
-      <div v-if="isLoggedIn">Signed in as: {{ user.email }} <v-btn @click="logout" text>Sign out</v-btn></div>
+      <div v-if="isLoggedIn">
+        Signed in as: {{ user.email }}
+        <v-btn @click="logout" text>Sign out</v-btn>
+      </div>
       <div v-else>Not signed in.</div>
     </v-system-bar>
 
-    <v-app-bar color="deep-purple accent-4" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-app-bar dark>
+      <v-app-bar-nav-icon
+        v-if="isLoggedIn"
+        @click.stop="drawer = !drawer"
+      ></v-app-bar-nav-icon>
 
-      <router-link to="/"><v-toolbar-title to="/">TODO</v-toolbar-title></router-link>
+      <router-link to="/"
+        ><v-toolbar-title to="/">TODO</v-toolbar-title></router-link
+      >
 
       <v-spacer></v-spacer>
 
@@ -19,17 +27,19 @@
       </v-btn>
 
       <v-btn icon>
-        <v-icon>mdi-filter</v-icon>
-      </v-btn>
-
-      <v-btn icon>
         <v-icon>mdi-dots-vertical</v-icon>
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" absolute bottom temporary>
+    <v-navigation-drawer
+      v-if="isLoggedIn"
+      v-model="drawer"
+      absolute
+      bottom
+      temporary
+    >
       <v-list nav dense>
-        <v-list-item-group active-class="deep-purple--text text--accent-4">
+        <v-list-item-group>
           <router-link to="/tasks">
             <v-list-item>
               <v-list-item-title>Tasks</v-list-item-title>
@@ -56,10 +66,11 @@ export default {
       isLoggedIn: false,
       drawer: false,
       user: {},
+      isMagnifiedClicked: false,
     };
   },
   methods: {
-    async getUserData(){
+    async getUserData() {
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -71,29 +82,35 @@ export default {
         }
       });
     },
-    logout(){
-      getAuth().signOut().then(() => {
-        console.log("Signed out succesfully!");
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
+    logout() {
+      getAuth()
+        .signOut()
+        .then(() => {
+          console.log("Signed out succesfully!");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   computed: {
-    date(){
-      return new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    }
+    date() {
+      return new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    },
   },
   mounted() {
     this.getUserData();
-  }
+  },
 };
 </script>
 <style scoped>
 a {
   color: white;
 }
-a:visited{
+a:visited {
   color: white;
 }
 </style>

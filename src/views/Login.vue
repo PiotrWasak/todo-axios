@@ -6,6 +6,7 @@
           <v-text-field
             v-model="emailValue"
             label="E-mail"
+            type="email"
             :rules="emailRules"
             required
           ></v-text-field>
@@ -25,12 +26,38 @@
       </v-row>
       <v-row>
         <v-col align="center">
-          <v-btn @click="loginUser" :disabled="!loginValid" color="primary" align="center">Log in</v-btn>
+          <v-btn
+            @click="loginUser"
+            :disabled="!loginValid"
+            color="primary"
+            align="center"
+            >Log in</v-btn
+          >
         </v-col>
       </v-row>
     </v-form>
 
-    <v-row><v-col color="secondary" align="center"><v-btn to="register">Don't have an account? Register!</v-btn></v-col></v-row>
+    <v-row
+      ><v-col align="center"
+        ><v-btn color="secondary" to="register"
+          >Don't have an account? Register!</v-btn
+        ></v-col
+      ></v-row
+    >
+
+    <v-row>
+      <v-col>
+        <v-alert
+          v-if="loginErrorText"
+          class="text-center"
+          dense
+          elevation="5"
+          type="error"
+          transition="fab-transition"
+          >{{ loginErrorText }}
+        </v-alert>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -42,24 +69,30 @@ export default {
   data() {
     return {
       loginValid: true,
-      emailValue: '',
-      passwordValue: '',
-      emailRules: [],
-      passwordRules: [],
-    }
+      emailValue: "",
+      passwordValue: "",
+      emailRules: [(v) => !!v || "E-mail is required"],
+      passwordRules: [
+        (v) => !!v || "Password is required",
+        (v) => v.length <= 20 || "Password must be less than 20 characters",
+      ],
+      loginErrorText: "",
+    };
   },
   methods: {
-    loginUser(){
-      const auth=getAuth();
-      signInWithEmailAndPassword(auth, this.emailValue, this.passwordValue).then((userCredential) =>{
-        console.log(userCredential);
-        this.$router.push("/tasks").catch(() => console.log('error'));
-      }).catch((error) => {
-        console.log(error.code);
-        console.log(error.message);
-      })
-    }
-  }
+    loginUser() {
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, this.emailValue, this.passwordValue)
+        .then((userCredential) => {
+          console.log(userCredential);
+          this.$router.push("/tasks").catch(() => console.log("error"));
+        })
+        .catch((error) => {
+          console.log(error);
+          this.loginErrorText = error.code;
+        });
+    },
+  },
 };
 </script>
 

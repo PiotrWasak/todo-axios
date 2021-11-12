@@ -25,11 +25,34 @@
       </v-row>
       <v-row>
         <v-col align="center">
-          <v-btn @click="registerUser" :disabled="!registerValid" color="primary" align="center">Register</v-btn>
+          <v-btn
+            @click="registerUser"
+            :disabled="!registerValid"
+            color="primary"
+            align="center"
+            >Register</v-btn
+          >
         </v-col>
       </v-row>
     </v-form>
-    <v-row><v-col color="secondary" align="center"><v-btn to="login">Already have an account? Log in!</v-btn></v-col></v-row>
+    <v-row
+      ><v-col color="secondary" align="center"
+        ><v-btn to="login">Already have an account? Log in!</v-btn></v-col
+      ></v-row
+    >
+    <v-row>
+      <v-col>
+        <v-alert
+          v-if="registerErrorText"
+          class="text-center"
+          dense
+          elevation="5"
+          type="error"
+          transition="fab-transition"
+          >{{ registerErrorText }}
+        </v-alert>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -41,26 +64,33 @@ export default {
   data() {
     return {
       registerValid: true,
-      loginValue: '',
-      passwordValue: '',
+      loginValue: "",
+      passwordValue: "",
+      registerErrorText: "",
       emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+        (v) => !!v || "E-mail is required",
+        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
       ],
       passwordRules: [
-        v => !!v || "Password is required",
-        v => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(v) || 'Minimum eight characters, at least one uppercase letter, one lowercase letter and one number',
-        v => v.length <= 20 || "Password must be less than 20 characters"
+        (v) => !!v || "Password is required",
+        (v) =>
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(v) ||
+          "Minimum eight characters, at least one uppercase letter, one lowercase letter and one number",
+        (v) => v.length <= 20 || "Password must be less than 20 characters",
       ],
-    }
+    };
   },
   methods: {
     registerUser() {
       const auth = getAuth();
-      createUserWithEmailAndPassword(auth, this.loginValue, this.passwordValue).then((userCredential) => {
-        console.log(userCredential.user);
-        this.$router.push("/tasks");
-      })
+      createUserWithEmailAndPassword(auth, this.loginValue, this.passwordValue)
+        .then((userCredential) => {
+          console.log(userCredential.user);
+          this.$router.push("/tasks");
+        })
+        .catch((error) => {
+          this.registerErrorText = error.code;
+        });
     },
   },
 };
