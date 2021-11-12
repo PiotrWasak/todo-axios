@@ -57,7 +57,11 @@
 </template>
 
 <script>
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 
 export default {
   name: "Auth",
@@ -86,6 +90,7 @@ export default {
       createUserWithEmailAndPassword(auth, this.loginValue, this.passwordValue)
         .then((userCredential) => {
           console.log(userCredential.user);
+          sendEmailVerification(userCredential.user);
           this.$router.push("/tasks");
         })
         .catch((error) => {

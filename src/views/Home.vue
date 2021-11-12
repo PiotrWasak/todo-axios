@@ -1,74 +1,87 @@
 <template>
-  <div>
-    <v-form ref="form" v-model="taskValid">
-      <v-row>
-        <v-col cols="12" md="11">
-          <v-text-field
-            @keydown.enter.prevent="addTask"
-            v-model="taskValue"
-            label="Add task"
-            :counter="50"
-            :rules="taskRules"
-            required
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="1">
-          <v-fade-transition>
-            <v-btn
-              v-if="taskValid"
-              @click.prevent="addTask"
-              elevation="2"
-              fab
-              color="primary"
-            >
-              <v-icon dark> mdi-plus</v-icon>
-            </v-btn>
-          </v-fade-transition>
-        </v-col>
-      </v-row>
-    </v-form>
+  <v-card>
+    <v-container>
+      <v-form ref="form" v-model="taskValid">
+        <v-row>
+          <v-col cols="12" md="11">
+            <v-text-field
+              ref="addTaskInput"
+              @keydown.enter.prevent="addTask"
+              v-model="taskValue"
+              label="Add task"
+              :counter="50"
+              :rules="taskRules"
+              required
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="1">
+            <v-fade-transition>
+              <v-btn
+                v-if="taskValid"
+                @click.prevent="addTask"
+                elevation="2"
+                fab
+                color="primary"
+              >
+                <v-icon dark> mdi-plus</v-icon>
+              </v-btn>
+            </v-fade-transition>
+          </v-col>
+        </v-row>
+      </v-form>
 
-    <v-list dense>
-      <v-subheader>TASKS</v-subheader>
-      <v-list-item-group v-model="selectedTask" color="primary">
-        <v-list-item v-for="task in taskList" :key="task.id">
-          <v-list-item-icon>
-            <v-icon @click="makeTaskDone(task)" v-text="listIcon"></v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title v-text="task.value"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
+      <v-list dense>
+        <v-subheader>TASKS</v-subheader>
+        <v-list-item-group v-model="selectedTask" color="primary">
+          <v-list-item v-for="task in taskList" :key="task.id">
+            <v-list-item-icon>
+              <v-icon
+                @click="updateDatabase(task.uid, 'done')"
+                v-text="listIcon"
+              ></v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title v-text="task.value"></v-list-item-title>
+            </v-list-item-content>
+            <v-spacer></v-spacer>
+            <v-list-item-icon>
+              <v-icon
+                @click="deleteFromDatabase(task.uid)"
+                v-text="ListIconDelete"
+              ></v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
 
-    <v-list dense>
-      <v-subheader>DONE</v-subheader>
-      <v-list-item-group v-model="selectedDoneTask" color="primary">
-        <v-list-item v-for="task in doneTaskList" :key="task.id">
-          <v-list-item-icon>
-            <v-icon
-              @click="makeTaskActive(task)"
-              v-text="ListIconDone"
-            ></v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title
-              class="taskDone"
-              v-text="task.value"
-            ></v-list-item-title>
-          </v-list-item-content>
-          <v-spacer></v-spacer>
-          <v-list-item-icon>
-            <v-icon
-              @click="deleteFromDatabase(task.uid)"
-              v-text="ListIconDelete"
-            ></v-icon>
-          </v-list-item-icon>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
-  </div>
+      <v-list dense>
+        <v-subheader>DONE</v-subheader>
+        <v-list-item-group v-model="selectedDoneTask" color="primary">
+          <v-list-item v-for="task in doneTaskList" :key="task.id">
+            <v-list-item-icon>
+              <v-icon
+                @click="updateDatabase(task.uid, 'todo')"
+                v-text="ListIconDone"
+              ></v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title
+                class="taskDone"
+                v-text="task.value"
+              ></v-list-item-title>
+            </v-list-item-content>
+            <v-spacer></v-spacer>
+            <v-list-item-icon>
+              <v-icon
+                @click="deleteFromDatabase(task.uid)"
+                v-text="ListIconDoneDelete"
+              ></v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-container>
+  </v-card>
 </template>
 
 <script>
@@ -89,9 +102,10 @@ export default {
       doneTaskList: [],
       listIcon: "mdi-checkbox-blank-circle-outline",
       ListIconDone: "mdi-check-circle",
-      ListIconDelete: "mdi-delete-circle",
+      ListIconDoneDelete: "mdi-delete-circle",
+      ListIconDelete: "mdi-delete-circle-outline",
       taskRules: [
-        (v) => !!v || "This field is required",
+        (v) => !!v,
         // (v) => v.length <= 50 || "This field must be less than 50 characters",
       ],
     };
@@ -106,13 +120,8 @@ export default {
       if (this.taskValid) {
         this.postToDatabase();
         this.resetValidation();
+        this.$refs.addTaskInput.blur();
       }
-    },
-    makeTaskDone(task) {
-      this.updateDatabase(task.uid, "done");
-    },
-    makeTaskActive(task) {
-      this.updateDatabase(task.uid, "todo");
     },
     resetValidation() {
       this.$refs.form.reset();
@@ -201,20 +210,5 @@ export default {
 <style>
 .taskDone {
   text-decoration: line-through;
-}
-
-.list-item {
-  display: inline-block;
-  margin-right: 10px;
-}
-
-.list-enter-active,
-.list-leave-active {
-  transition: all 1s;
-}
-
-.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
-  opacity: 0;
-  transform: translateY(30px);
 }
 </style>

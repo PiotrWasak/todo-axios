@@ -1,7 +1,5 @@
 <template>
-  <v-container>
-
-  </v-container>
+  <v-container> </v-container>
 </template>
 
 <script>
@@ -15,15 +13,16 @@ export default {
     };
   },
   methods: {
-    redirect(){
+    redirect() {
       if (this.isLoggedIn) {
-        this.$router.push('/tasks').catch(() => {
-          console.log('error');});
+        this.$router.push("/tasks").catch(() => {
+          console.log("error");
+        });
       } else {
-        this.$router.push('/login');
+        this.$router.push("/login");
       }
     },
-    async getUserData(){
+    async getUserData() {
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -40,10 +39,8 @@ export default {
   },
   mounted() {
     this.getUserData();
-  }
+  },
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

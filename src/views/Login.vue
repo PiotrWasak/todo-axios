@@ -84,8 +84,11 @@ export default {
       const auth = getAuth();
       signInWithEmailAndPassword(auth, this.emailValue, this.passwordValue)
         .then((userCredential) => {
-          console.log(userCredential);
-          this.$router.push("/tasks").catch(() => console.log("error"));
+          if (userCredential.user.emailVerified) {
+            this.$router.push("/tasks").catch(() => console.log("error"));
+          } else {
+            this.loginErrorText = "Please verify your login";
+          }
         })
         .catch((error) => {
           console.log(error);
