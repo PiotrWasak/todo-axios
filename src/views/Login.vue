@@ -4,6 +4,7 @@
       <v-row>
         <v-col>
           <v-text-field
+            @keydown.enter.prevent="loginUser"
             v-model="emailValue"
             label="E-mail"
             type="email"
@@ -15,6 +16,7 @@
       <v-row>
         <v-col>
           <v-text-field
+            @keydown.enter.prevent="loginUser"
             v-model="passwordValue"
             label="Password"
             :counter="20"
@@ -27,7 +29,7 @@
       <v-row>
         <v-col align="center">
           <v-btn
-            @click="loginUser"
+            @click.prevent="loginUser"
             :disabled="!loginValid"
             color="primary"
             align="center"

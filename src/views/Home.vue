@@ -33,7 +33,11 @@
       <v-list dense>
         <v-subheader>TASKS</v-subheader>
         <v-list-item-group v-model="selectedTask" color="primary">
-          <v-list-item v-for="task in taskList" :key="task.id">
+          <v-list-item
+            @click.right.prevent="openRightClickMenu"
+            v-for="task in taskList"
+            :key="task.uid"
+          >
             <v-list-item-icon>
               <v-icon
                 @click="updateDatabase(task.uid, 'done')"
@@ -57,7 +61,11 @@
       <v-list dense>
         <v-subheader>DONE</v-subheader>
         <v-list-item-group v-model="selectedDoneTask" color="primary">
-          <v-list-item v-for="task in doneTaskList" :key="task.id">
+          <v-list-item
+            @click.right.prevent="openRightClickMenu"
+            v-for="task in doneTaskList"
+            :key="task.uid"
+          >
             <v-list-item-icon>
               <v-icon
                 @click="updateDatabase(task.uid, 'todo')"
@@ -81,6 +89,25 @@
         </v-list-item-group>
       </v-list>
     </v-container>
+
+    <v-menu
+      v-model="showMenu"
+      :position-x="x"
+      :position-y="y"
+      absolute
+      offset-y
+    >
+      <v-list>
+        <v-list-item class="rightClickMenu">
+          <v-list-item-icon
+            ><v-icon>mdi-clipboard-edit-outline</v-icon></v-list-item-icon
+          >
+          <v-list-item-title
+            ><v-text-field autofocus> </v-text-field
+          ></v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
   </v-card>
 </template>
 
@@ -93,6 +120,9 @@ export default {
   components: {},
   data() {
     return {
+      showMenu: false,
+      x: 0,
+      y: 0,
       selectedTask: null,
       selectedDoneTask: null,
       taskValid: true,
@@ -116,6 +146,16 @@ export default {
     },
   },
   methods: {
+    openRightClickMenu(e) {
+      console.log("right");
+      e.preventDefault();
+      this.showMenu = false;
+      this.x = e.clientX;
+      this.y = e.clientY;
+      this.$nextTick(() => {
+        this.showMenu = true;
+      });
+    },
     async addTask() {
       if (this.taskValid) {
         this.postToDatabase();
@@ -196,7 +236,7 @@ export default {
           console.log("Succesfully deleted");
           this.getFromDatabase();
         })
-        .cath((error) => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -210,5 +250,8 @@ export default {
 <style>
 .taskDone {
   text-decoration: line-through;
+}
+.rightClickMenu {
+  cursor: pointer;
 }
 </style>

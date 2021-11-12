@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 import Profile from "@/views/Profile";
+import Todos from "@/views/Todos";
 import Auth from "@/views/Auth";
 import Register from "@/views/Register";
 import Login from "@/views/Login";
@@ -35,7 +35,13 @@ const routes = [
   {
     path: "/tasks",
     name: "Tasks",
-    component: Home,
+    component: Todos,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/todos",
+    name: "Todos",
+    component: Todos,
     meta: { requiresAuth: true },
   },
 ];
