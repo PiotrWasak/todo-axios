@@ -2,10 +2,9 @@
   <v-container>
     <todo-add
       v-on:add-task="postToDatabase"
-      v-on:updateStatus="updateDatabase"
     ></todo-add>
-    <todo-list :task-list="taskList"></todo-list>
-    <todo-list-done :done-task-list="doneTaskList"></todo-list-done>
+    <todo-list  v-on:updateStatus="updateDatabase" :task-list="taskList"></todo-list>
+    <todo-list-done  v-on:updateStatus="updateDatabase" :done-task-list="doneTaskList"></todo-list-done>
   </v-container>
 </template>
 
@@ -49,7 +48,7 @@ export default {
         status: "todo",
       };
       axios
-        .post(this.fetchUrl + ".json", taskData)
+        .post(`/${this.userData.uid}.json`, taskData)
         .then((response) => {
           console.log("Post response", response);
           this.getFromDatabase();
@@ -61,7 +60,7 @@ export default {
     updateDatabase(taskId, status) {
       console.log("upDb");
       axios
-        .patch(`${this.fetchUrl}/${taskId}.json`, {
+        .patch(`${this.userData.uid}/${taskId}.json`, {
           status: status,
         })
         .then((response) => {
@@ -77,7 +76,7 @@ export default {
       this.doneTaskList.splice(0, this.doneTaskList.length);
       console.log("getFrom");
       axios
-        .get(this.fetchUrl + ".json")
+        .get(`${this.userData.uid}.json`)
         .then((response) => {
           Object.entries(response.data).forEach((element) => {
             const task = {
@@ -98,7 +97,7 @@ export default {
     },
     deleteFromDatabase(taskId) {
       axios
-        .delete(`${this.fetchUrl}/${taskId}.json`)
+        .delete(`${this.userData.uid}/${taskId}.json`)
         .then(() => {
           console.log("Succesfully deleted");
           this.getFromDatabase();

@@ -8,7 +8,7 @@
         :key="task.uid"
       >
         <v-list-item-icon>
-          <v-icon @click="updateDatabase(task.uid, 'todo')"
+          <v-icon @click="updateStatus(task.uid, 'todo')"
             >mdi-check-circle</v-icon
           >
         </v-list-item-icon>
@@ -30,8 +30,11 @@
 </template>
 
 <script>
+import { taskListMixin } from "@/mixins/taskListMixin";
+
 export default {
   name: "TodoListDone",
+  mixins: [taskListMixin],
   props: {
     doneTaskList: Array,
   },

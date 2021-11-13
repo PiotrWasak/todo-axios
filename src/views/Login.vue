@@ -38,11 +38,10 @@
         </v-col>
       </v-row>
     </v-form>
-
     <v-row
       ><v-col align="center"
-        ><v-btn color="secondary" to="register"
-          >Don't have an account? Register!</v-btn
+        ><p class="text-caption">Don't have an account?</p> <v-btn small color="secondary" to="register"
+    > Register</v-btn
         ></v-col
       ></v-row
     >
