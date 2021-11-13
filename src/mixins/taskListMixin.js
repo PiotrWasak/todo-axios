@@ -6,8 +6,10 @@ export var taskListMixin = {
   },
   methods: {
     updateStatus(taskUID, newStatus) {
-      console.log("update status");
       this.$emit("updateStatus", taskUID, newStatus);
+    },
+    deleteTask(taskUID) {
+      this.$emit("deleteTask", taskUID);
     },
   },
 };

@@ -3,7 +3,7 @@
     <todo-add
       v-on:add-task="postToDatabase"
     ></todo-add>
-    <todo-list  v-on:updateStatus="updateDatabase" :task-list="taskList"></todo-list>
+    <todo-list v-on:deleteTask="deleteFromDatabase" v-on:updateStatus="updateDatabase" :task-list="taskList"></todo-list>
     <todo-list-done  v-on:updateStatus="updateDatabase" :done-task-list="doneTaskList"></todo-list-done>
   </v-container>
 </template>
@@ -49,8 +49,7 @@ export default {
       };
       axios
         .post(`/${this.userData.uid}.json`, taskData)
-        .then((response) => {
-          console.log("Post response", response);
+        .then(() => {
           this.getFromDatabase();
         })
         .catch((error) => {
@@ -58,13 +57,11 @@ export default {
         });
     },
     updateDatabase(taskId, status) {
-      console.log("upDb");
       axios
         .patch(`${this.userData.uid}/${taskId}.json`, {
           status: status,
         })
-        .then((response) => {
-          console.log("update response", response);
+        .then(() => {
           this.getFromDatabase();
         })
         .catch((error) => {
@@ -74,7 +71,6 @@ export default {
     getFromDatabase() {
       this.taskList.splice(0, this.taskList.length);
       this.doneTaskList.splice(0, this.doneTaskList.length);
-      console.log("getFrom");
       axios
         .get(`${this.userData.uid}.json`)
         .then((response) => {

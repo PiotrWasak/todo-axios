@@ -26,7 +26,6 @@ export default {
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          console.log(user.email);
           this.isLoggedIn = true;
           this.redirect();
         } else {

@@ -20,7 +20,7 @@
         </v-list-item-content>
         <v-spacer></v-spacer>
         <v-list-item-icon>
-          <v-icon @click="deleteFromDatabase(task.uid)"
+          <v-icon @click="deleteTask(task.uid)"
             >mdi-delete-circle</v-icon
           >
         </v-list-item-icon>
