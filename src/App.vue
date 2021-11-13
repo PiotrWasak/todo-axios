@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <main-nav></main-nav>
+    <the-main-nav></the-main-nav>
     <v-main>
       <v-container>
         <router-view />
@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import MainNav from "./components/TheMainNav.vue";
+import TheMainNav from "@/components/Layout/TheMainNav";
 export default {
-  components: { MainNav },
+  components: { TheMainNav },
   name: "App",
 
   data: () => ({
@@ -22,7 +22,7 @@ export default {
 </script>
 
 <style>
-a{
+a {
   text-decoration: none;
 }
 </style>
