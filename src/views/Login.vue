@@ -101,7 +101,11 @@ export default {
       const auth = getAuth();
       const provider = new GoogleAuthProvider();
       provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-      signInWithPopup(auth, provider);
+      signInWithPopup(auth, provider).then(() => {
+        this.$router.push('/tasks')
+      }).catch(error => {
+        console.log(error);
+      });
     }
   },
 };
