@@ -17,7 +17,7 @@
         </v-list-item-content>
         <v-spacer></v-spacer>
         <v-list-item-icon>
-          <v-icon @click="deleteFromDatabase(task.uid)"
+          <v-icon @click="deleteTask(task.uid)"
             >mdi-delete-circle-outline</v-icon
           >
         </v-list-item-icon>
@@ -35,9 +35,6 @@ export default {
   mixins: [taskListMixin],
   data() {
     return {};
-  },
-  mounted() {
-    console.log(this.taskList);
   },
 };
 </script>

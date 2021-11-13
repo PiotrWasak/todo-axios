@@ -76,7 +76,6 @@ export default {
         if (user) {
           this.user = user;
           this.isLoggedIn = true;
-          console.log(user.email);
         } else {
           this.isLoggedIn = false;
         }
