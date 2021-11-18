@@ -12,4 +12,12 @@ export var taskListMixin = {
       this.$emit("deleteTask", taskUID);
     },
   },
+  computed: {
+    taskListCounter() {
+      return this.taskList.length;
+    },
+    doneTaskListCounter() {
+      return this.doneTaskList.length;
+    },
+  },
 };

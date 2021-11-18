@@ -1,6 +1,6 @@
 <template>
   <v-list dense>
-    <v-subheader>TASKS</v-subheader>
+    <v-subheader>TASKS: {{ taskListCounter }}</v-subheader>
     <v-list-item-group v-model="selectedTask" color="primary">
       <v-list-item
         @click.right.prevent="openRightClickMenu"
