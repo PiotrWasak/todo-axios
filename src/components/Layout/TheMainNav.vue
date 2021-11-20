@@ -28,7 +28,6 @@
       </v-btn>
 
 
-
       <v-btn @click="toggleProfileMenu" icon>
         <v-icon>mdi-dots-vertical</v-icon>
       </v-btn>
@@ -74,9 +73,8 @@ export default {
     return {
       isLoggedIn: false,
       drawer: false,
-      user: {},
       isMagnifiedClicked: false,
-      isProfileMenuVisible: true,
+      isProfileMenuVisible: false,
     };
   },
   methods: {
