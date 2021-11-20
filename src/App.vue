@@ -3,7 +3,9 @@
     <the-main-nav></the-main-nav>
     <v-main>
       <v-container>
-        <router-view />
+        <keep-alive>
+          <router-view :key="$route.fullPath" />
+        </keep-alive>
       </v-container>
     </v-main>
   </v-app>

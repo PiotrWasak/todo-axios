@@ -8,8 +8,16 @@ export function postToDatabase(taskValue) {
   };
   axios
     .post(`/${this.userData.uid}.json`, taskData)
-    .then(() => {
-      this.getFromDatabase();
+    .then((response) => {
+      console.log(response);
+      if (response.status === 200) {
+        this.taskList.push({
+          uid: response.data.name,
+          value: taskData.task,
+          status: taskData.status,
+        });
+      }
+      //this.getFromDatabase();
     })
     .catch((error) => {
       console.log(error);
@@ -21,8 +29,11 @@ export function updateDatabase(taskId, status) {
     .patch(`${this.userData.uid}/${taskId}.json`, {
       status: status,
     })
-    .then(() => {
+    .then((response) => {
       this.getFromDatabase();
+      if (response.status === 200) {
+        console.log(response);
+      }
     })
     .catch((error) => {
       console.log(error);
@@ -56,9 +67,15 @@ export function getFromDatabase() {
 export function deleteFromDatabase(taskId) {
   axios
     .delete(`${this.userData.uid}/${taskId}.json`)
-    .then(() => {
-      console.log("Succesfully deleted");
-      this.getFromDatabase();
+    .then((response) => {
+      if (response.status === 200) {
+        console.log(taskId);
+        const removeIndex = this.taskList.findIndex((item) => {
+          return item.uid === taskId;
+        });
+        this.taskList.splice(removeIndex, 1);
+      }
+      //this.getFromDatabase();
     })
     .catch((error) => {
       console.log(error);
