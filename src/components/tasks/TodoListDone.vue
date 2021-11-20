@@ -2,6 +2,7 @@
   <v-list dense>
     <v-subheader>DONE: {{ doneTaskListCounter }}</v-subheader>
     <v-list-item-group v-model="selectedDoneTask" color="primary">
+      <v-fade-transition group tag="v-list">
       <v-list-item
         @click.right.prevent="openRightClickMenu"
         v-for="task in doneTaskList"
@@ -23,6 +24,7 @@
           <v-icon @click="deleteTask(task.uid)">mdi-delete-circle</v-icon>
         </v-list-item-icon>
       </v-list-item>
+      </v-fade-transition>
     </v-list-item-group>
   </v-list>
 </template>

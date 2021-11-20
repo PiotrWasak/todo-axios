@@ -14,35 +14,37 @@ const routes = [
     path: "/",
     name: "Auth",
     component: Auth,
+    meta: {
+      subtitle: "Auth",
+    },
   },
   {
     path: "/register",
     name: "Register",
     component: Register,
+    meta: {
+      subtitle: "Register",
+    },
   },
   {
     path: "/login",
     name: "Login",
     component: Login,
+    meta: {
+      subtitle: "Login",
+    },
   },
   {
     path: "/profile",
     name: "Profile",
     component: Profile,
-    meta: { requiresAuth: true },
-    //import(/* webpackChunkName: "about" */ "@/views/Profile"),
+    meta: { subtitle: "Profile", requiresAuth: true },
   },
   {
     path: "/tasks",
     name: "Tasks",
     component: Todos,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/todos",
-    name: "Todos",
-    component: Todos,
-    meta: { requiresAuth: true },
+    meta: { subtitle: "List", requiresAuth: true },
   },
 ];
 
@@ -52,6 +54,9 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  const pageTitle = "TODO";
+  document.title = `${pageTitle} - ${to.meta.subtitle}`;
+
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const isAuthenticated = getAuth().currentUser;
   if (requiresAuth && !isAuthenticated) {
@@ -60,5 +65,4 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-
 export default router;

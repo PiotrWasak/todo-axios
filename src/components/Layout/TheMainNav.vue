@@ -1,5 +1,6 @@
 <template>
   <div>
+    <profile-menu  :is-visible="isProfileMenuVisible"></profile-menu>
     <v-system-bar>
       {{ date }}
       <v-spacer></v-spacer>
@@ -26,9 +27,15 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <v-btn icon>
+
+
+      <v-btn @click="toggleProfileMenu" icon>
         <v-icon>mdi-dots-vertical</v-icon>
       </v-btn>
+
+
+
+
     </v-app-bar>
 
     <v-navigation-drawer
@@ -58,15 +65,18 @@
 </template>
 <script>
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import ProfileMenu from "@/components/UI/ProfileMenu";
 
 export default {
   name: "TheMainNav",
+  components: { ProfileMenu },
   data() {
     return {
       isLoggedIn: false,
       drawer: false,
       user: {},
       isMagnifiedClicked: false,
+      isProfileMenuVisible: true,
     };
   },
   methods: {
@@ -80,6 +90,9 @@ export default {
           this.isLoggedIn = false;
         }
       });
+    },
+    toggleProfileMenu() {
+      this.isProfileMenuVisible = !this.isProfileMenuVisible;
     },
     logout() {
       getAuth()

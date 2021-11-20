@@ -30,9 +30,22 @@ export function updateDatabase(taskId, status) {
       status: status,
     })
     .then((response) => {
-      this.getFromDatabase();
+      //this.getFromDatabase();
       if (response.status === 200) {
         console.log(response);
+        if (status === "todo") {
+          const removeIndex = this.doneTaskList.findIndex((item) => {
+            return item.uid === taskId;
+          });
+          this.taskList.unshift(this.doneTaskList[removeIndex]);
+          this.doneTaskList.splice(removeIndex, 1);
+        } else if (status === "done") {
+          const removeIndex = this.taskList.findIndex((item) => {
+            return item.uid === taskId;
+          });
+          this.doneTaskList.unshift(this.taskList[removeIndex]);
+          this.taskList.splice(removeIndex, 1);
+        }
       }
     })
     .catch((error) => {
