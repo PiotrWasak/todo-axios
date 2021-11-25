@@ -1,45 +1,57 @@
 <template>
-    <v-card>
-      <v-card-title>Profile</v-card-title>
-      <v-card-text class="profileContainer">
-    <v-row>
-      <v-col><v-icon color="primary">mdi-email</v-icon> E-mail </v-col>
-      <v-col>
-        {{ userData.email }}
-      </v-col>
-      <v-col> {{ emailVerifyText }} </v-col>
-      <v-col v-if="!userData.emailVerified"><v-btn  @click="sendVerifyEmail">Send verification e-mail</v-btn></v-col>
-    </v-row>
-        <v-divider class="divider"></v-divider>
-        <v-row>
-          <v-col>
-            <v-icon>mdi-lock</v-icon>
-            Password
-          </v-col>
-          <v-col></v-col>
-          <v-col><v-btn @click="sendPasswordReset">Reset password</v-btn></v-col>
-        </v-row>
-        <v-divider class="divider"></v-divider>
-        <v-row>
-          <v-col>Name</v-col>
-          <v-col><v-text-field label="First name" v-model="firstName"></v-text-field> </v-col>
-          <v-col><v-text-field label="Last name"></v-text-field> </v-col>
-        </v-row>
-      </v-card-text>
-      <v-snackbar v-model="snackbar.isActive" :timeout="snackbar.timeout">{{ snackbar.text }}</v-snackbar>
-    </v-card>
-
+  <v-card>
+    <input type="checkbox" />
+    <v-card-title>Profile</v-card-title>
+    <v-card-text class="profileContainer">
+      <v-row>
+        <v-col><v-icon color="primary">mdi-email</v-icon> E-mail </v-col>
+        <v-col>
+          {{ userData.email }}
+        </v-col>
+        <v-col> {{ emailVerifyText }} </v-col>
+        <v-col v-if="!userData.emailVerified"
+          ><v-btn @click="sendVerifyEmail"
+            >Send verification e-mail</v-btn
+          ></v-col
+        >
+      </v-row>
+      <v-divider class="divider"></v-divider>
+      <v-row>
+        <v-col>
+          <v-icon>mdi-lock</v-icon>
+          Password
+        </v-col>
+        <v-col></v-col>
+        <v-col><v-btn @click="sendPasswordReset">Reset password</v-btn></v-col>
+      </v-row>
+      <v-divider class="divider"></v-divider>
+      <v-row>
+        <v-col>Name</v-col>
+        <v-col
+          ><v-text-field label="First name" v-model="firstName"></v-text-field>
+        </v-col>
+        <v-col><v-text-field label="Last name"></v-text-field> </v-col>
+      </v-row>
+    </v-card-text>
+    <v-snackbar v-model="snackbar.isActive" :timeout="snackbar.timeout">{{
+      snackbar.text
+    }}</v-snackbar>
+  </v-card>
 </template>
 <script>
 import { userDataMixin } from "@/mixins/userDataMixin";
-import {getAuth, sendEmailVerification, sendPasswordResetEmail} from "firebase/auth";
+import {
+  getAuth,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 
 export default {
   name: "Profile",
   mixins: [userDataMixin],
   data() {
     return {
-      snackbar: {isActive: false, text: null, timeout: 15000}
+      snackbar: { isActive: false, text: null, timeout: 15000 },
     };
   },
   computed: {
@@ -52,28 +64,32 @@ export default {
     },
     firstName() {
       console.log(this.userData);
-      return '';
-    }
+      return "";
+    },
   },
   methods: {
-    sendVerifyEmail(){
-      sendEmailVerification(getAuth().currentUser).then(() => {
-        this.snackbar.text = "Verification email send";
-        this.snackbar.isActive = true;
-      }).catch((error) => {
-        this.snackbar.text = error;
-        this.snackbar.isActive = true;
-      });
+    sendVerifyEmail() {
+      sendEmailVerification(getAuth().currentUser)
+        .then(() => {
+          this.snackbar.text = "Verification email send";
+          this.snackbar.isActive = true;
+        })
+        .catch((error) => {
+          this.snackbar.text = error;
+          this.snackbar.isActive = true;
+        });
     },
     sendPasswordReset() {
-      sendPasswordResetEmail(getAuth(), getAuth().currentUser.email).then(() =>{
-        this.snackbar.text = "Password reset email send!";
-        this.snackbar.isActive = true;
-      }).catch((error) =>{
-        this.snackbar.text = error;
-        this.snackbar.isActive = true;
-      });
-    }
+      sendPasswordResetEmail(getAuth(), getAuth().currentUser.email)
+        .then(() => {
+          this.snackbar.text = "Password reset email send!";
+          this.snackbar.isActive = true;
+        })
+        .catch((error) => {
+          this.snackbar.text = error;
+          this.snackbar.isActive = true;
+        });
+    },
   },
 };
 </script>
@@ -84,8 +100,7 @@ export default {
   padding-top: 20px;
 }
 
-.profileContainer{
+.profileContainer {
   padding-top: 1em;
 }
-
 </style>
