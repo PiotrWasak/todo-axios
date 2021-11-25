@@ -1,6 +1,6 @@
 <template>
   <div>
-    <profile-menu  :is-visible="isProfileMenuVisible"></profile-menu>
+    <profile-menu :is-visible="isProfileMenuVisible"></profile-menu>
     <v-system-bar>
       {{ date }}
       <v-spacer></v-spacer>
@@ -27,14 +27,9 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-
       <v-btn @click="toggleProfileMenu" icon>
         <v-icon>mdi-dots-vertical</v-icon>
       </v-btn>
-
-
-
-
     </v-app-bar>
 
     <v-navigation-drawer
@@ -97,6 +92,7 @@ export default {
         .signOut()
         .then(() => {
           console.log("Signed out succesfully!");
+          this.$router.push("/");
         })
         .catch((error) => {
           console.log(error);

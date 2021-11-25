@@ -5,7 +5,7 @@ import Todos from "@/views/Todos";
 import Auth from "@/views/Auth";
 import Register from "@/views/Register";
 import Login from "@/views/Login";
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import NotFound from "@/views/NotFound";
 
 Vue.use(VueRouter);
@@ -19,13 +19,13 @@ const routes = [
       subtitle: "Auth",
     },
     beforeEnter(to, from, next) {
-      if (getAuth().currentUser) {
-        console.log("currus");
-        next("/tasks");
-      } else {
-        console.log("nocurr");
-        next("/login");
-      }
+      onAuthStateChanged(getAuth(), (user) => {
+        if (user) {
+          next("/tasks");
+        } else {
+          next("/login");
+        }
+      });
     },
   },
   {
