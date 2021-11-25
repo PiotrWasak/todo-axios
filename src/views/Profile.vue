@@ -1,6 +1,5 @@
 <template>
   <v-card>
-    <input type="checkbox" />
     <v-card-title>Profile</v-card-title>
     <v-card-text class="profileContainer">
       <v-row>

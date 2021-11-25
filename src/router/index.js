@@ -6,6 +6,7 @@ import Auth from "@/views/Auth";
 import Register from "@/views/Register";
 import Login from "@/views/Login";
 import { getAuth } from "firebase/auth";
+import NotFound from "@/views/NotFound";
 
 Vue.use(VueRouter);
 
@@ -16,6 +17,15 @@ const routes = [
     component: Auth,
     meta: {
       subtitle: "Auth",
+    },
+    beforeEnter(to, from, next) {
+      if (getAuth().currentUser) {
+        console.log("currus");
+        next("/tasks");
+      } else {
+        console.log("nocurr");
+        next("/login");
+      }
     },
   },
   {
@@ -45,6 +55,12 @@ const routes = [
     name: "Tasks",
     component: Todos,
     meta: { subtitle: "List", requiresAuth: true },
+  },
+  {
+    path: "/*",
+    name: "Not Found",
+    component: NotFound,
+    meta: { subtitle: "Not found" },
   },
 ];
 
