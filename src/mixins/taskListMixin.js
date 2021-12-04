@@ -9,6 +9,7 @@ export var taskListMixin = {
       this.$emit("updateStatus", taskUID, newStatus);
     },
     deleteTask(taskUID) {
+      console.log(taskUID);
       this.$emit("deleteTask", taskUID);
     },
   },

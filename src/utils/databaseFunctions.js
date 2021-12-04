@@ -7,7 +7,11 @@ export function postToDatabase(taskValue) {
     status: "todo",
   };
   axios
-    .post(`/${this.userData.uid}.json`, taskData)
+    .post(`/${this.userData.uid}.json`, taskData, {
+      params: {
+        auth: this.userData.accessToken,
+      },
+    })
     .then((response) => {
       console.log(response);
       if (response.status === 200) {
@@ -26,9 +30,17 @@ export function postToDatabase(taskValue) {
 
 export function updateDatabase(taskId, status) {
   axios
-    .patch(`${this.userData.uid}/${taskId}.json`, {
-      status: status,
-    })
+    .patch(
+      `${this.userData.uid}/${taskId}.json`,
+      {
+        status: status,
+      },
+      {
+        params: {
+          auth: this.userData.accessToken,
+        },
+      }
+    )
     .then((response) => {
       //this.getFromDatabase();
       if (response.status === 200) {
@@ -57,7 +69,11 @@ export function getFromDatabase() {
   this.taskList.splice(0, this.taskList.length);
   this.doneTaskList.splice(0, this.doneTaskList.length);
   axios
-    .get(`${this.userData.uid}.json`)
+    .get(`${this.userData.uid}.json`, {
+      params: {
+        auth: this.userData.accessToken,
+      },
+    })
     .then((response) => {
       Object.entries(response.data).forEach((element) => {
         const task = {
@@ -79,7 +95,11 @@ export function getFromDatabase() {
 
 export function deleteFromDatabase(taskId) {
   axios
-    .delete(`${this.userData.uid}/${taskId}.json`)
+    .delete(`${this.userData.uid}/${taskId}.json`, {
+      params: {
+        auth: this.userData.accessToken,
+      },
+    })
     .then((response) => {
       if (response.status === 200) {
         console.log(taskId);
@@ -87,6 +107,11 @@ export function deleteFromDatabase(taskId) {
           return item.uid === taskId;
         });
         this.taskList.splice(removeIndex, 1);
+
+        const removeDoneIndex = this.doneTaskList.findIndex((item) => {
+          return item.uid === taskId;
+        });
+        this.doneTaskList.splice(removeDoneIndex, 1);
       }
       //this.getFromDatabase();
     })

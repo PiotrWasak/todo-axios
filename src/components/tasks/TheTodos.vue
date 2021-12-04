@@ -7,6 +7,7 @@
       :task-list="taskList"
     ></todo-list>
     <todo-list-done
+      v-on:deleteTask="deleteFromDatabase"
       v-on:updateStatus="updateDatabase"
       :done-task-list="doneTaskList"
     ></todo-list-done>
