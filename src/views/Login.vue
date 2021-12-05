@@ -9,6 +9,7 @@
             label="E-mail"
             type="email"
             :rules="emailRules"
+            name="login"
             required
           ></v-text-field>
         </v-col>
@@ -22,6 +23,7 @@
             :counter="20"
             type="password"
             :rules="passwordRules"
+            name="password"
             required
           ></v-text-field>
         </v-col>
